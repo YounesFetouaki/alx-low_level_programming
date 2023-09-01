@@ -1,1 +1,1 @@
-this is the readme
+ starting learning C langage
