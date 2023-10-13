@@ -1,86 +1,52 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include "lists.h"
+
 
 /**
- * find -> Finds the biggest number
- * @a: array
- * @n: Array Size
- * Return: biggest number
+ * main - Generates and prints passwords for the crackme5 executable.
+ * @argc: The number of arguments supplied to the program.
+ * @argv: An array of pointers to the arguments.
+ *
+ * Return: Always 0.
  */
-
-int find(int *a, int n)
+int main(int __attribute__((__unused__)) argc, char *argv[])
 {
-	int i, big;
+	char password[7], *codex;
+	int len = strlen(argv[1]), i, tmp;
 
-	big = a[0];
-	for (i = 1; i < n; i++)
-	{
-		if (a[i] > big)
-			big = a[i];
-	}
-	return (big);
-}
+	codex = "A-CHRDw87lNS0E9B2TibgpnMVys5XzvtOGJcYLU+4mjW6fxqZeF3Qa1rPhdKIouk";
 
-/**
- * mult_char -> Multiplies each char of username
- * @usr: Username
- * @len: Username length
- * Return: Multiplied username
- */
+	tmp = (len ^ 59) & 63;
+	password[0] = codex[tmp];
 
-int mult_char(char *usr, int len)
-{
-	int i, mult;
-
-	mult = 1;
+	tmp = 0;
 	for (i = 0; i < len; i++)
-		mult *= usr[i];
-	return (mult);
-}
+		tmp += argv[1][i];
+	password[1] = codex[(tmp ^ 79) & 63];
 
-/**
- * gen_pass -> Generates a random char
- * @usr: Username
- * Return: Random char
- */
+	tmp = 1;
+	for (i = 0; i < len; i++)
+		tmp *= argv[1][i];
+	password[2] = codex[(tmp ^ 85) & 63];
 
-int gen_pass(char *usr)
-{
-	int i, len, mult, big, seed, key;
-	int arr[4];
-
-	len = 0;
-	while (usr[len] != '\0')
-		len++;
-	srand(time(NULL));
-	seed = rand();
-	srand(seed);
-	for (i = 0; i < 4; i++)
-		arr[i] = rand();
-	mult = mult_char(usr, len);
-	big = find(arr, 4);
-	key = (mult ^ big);
-	return (key);
-}
-
-/**
- * main -> Entry point
- * @argc: Number of arguments
- * @argv: Arguments
- * Return: 0 on success, 1 on failure
- */
-
-int main(int argc, char *argv[])
-{
-	int key;
-
-	if (argc != 2)
+	tmp = 0;
+	for (i = 0; i < len; i++)
 	{
-		printf("Usage: %s username\n", argv[0]);
-		return (1);
+		if (argv[1][i] > tmp)
+			tmp = argv[1][i];
 	}
-	key = gen_pass(argv[1]);
-	printf("%d\n", key);
+	srand(tmp ^ 14);
+	password[3] = codex[rand() & 63];
+
+	tmp = 0;
+	for (i = 0; i < len; i++)
+		tmp += (argv[1][i] * argv[1][i]);
+	password[4] = codex[(tmp ^ 239) & 63];
+
+	for (i = 0; i < argv[1][0]; i++)
+		tmp = rand();
+	password[5] = codex[(tmp ^ 229) & 63];
+
+	password[6] = '\0';
+	printf("%s", password);
 	return (0);
 }
