@@ -1,1 +1,0 @@
-> Here We Will See __*C - Dynamic libraries*__ ^_^
