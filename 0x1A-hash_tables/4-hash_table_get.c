@@ -6,7 +6,6 @@
  * @key: Hash Table Key
  * Return: Depend Condition
  */
-
 char *hash_table_get(const hash_table_t *ht, const char *key)
 {
 	unsigned long int index = 0;
@@ -16,7 +15,7 @@ char *hash_table_get(const hash_table_t *ht, const char *key)
 		return (NULL);
 	index = key_index((const unsigned char *)key, ht->size);
 	temp = ht->array[index];
-	while (temp != NULL)kk
+	while (temp != NULL)
 	{
 		if (strcmp(temp->key, key) == 0)
 			return (temp->value);
